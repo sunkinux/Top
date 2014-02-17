@@ -13,6 +13,7 @@ Global
 		{9C6E24B5-B64F-48FA-BEE5-CB7BA4161059}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C6E24B5-B64F-48FA-BEE5-CB7BA4161059}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C6E24B5-B64F-48FA-BEE5-CB7BA4161059}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C6E24B5-B64F-48FA-BEE5-CB7BA4161059}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

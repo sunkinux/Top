@@ -18,9 +18,17 @@
 <body>
     <form id="form1" runat="server">
     <div>
-        <asp:FileUpload ID="fulExcel" runat="server" Width="400" />
-        <asp:Button ID="Button_Import" runat="server" Text="导入" Width="100" Height="30" OnClick="Button_Import_Click" />
-        <br />
+        <p>
+            session: <input id="access_token" type="text" runat="server" style="width:500px"/><span style="color:red">*</span>
+            登陆<a href="http://api.taobao.com/apitools/sessionPage.htm" target="_blank">授权页面</a>，填写 appKey：21723219，获得 session
+        </p>
+        <p>            
+            <asp:FileUpload ID="fulExcel" runat="server" Width="400" />
+        </p>
+        <p>
+            <asp:Button ID="Button_Import" runat="server" Text="提交批量处理" Width="100" Height="30" OnClick="Button_Import_Click" />
+        </p>
+        
         <div id="divExcelData" runat="server"></div>
     </div>
     </form>

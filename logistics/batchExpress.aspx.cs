@@ -24,7 +24,7 @@ namespace batchExpress
         }
 
 
-        //上传文件
+        //上传文件，并读取数据，进行批量操作
         protected void Button_Import_Click(object sender, EventArgs e)
         {
             string fileName = DateTime.Now.ToString("yyMMddhhmmssfffff") + Path.GetExtension(fulExcel.FileName); //excel 第一行是字段名，另外数字前需加'转换成字符串
@@ -42,7 +42,7 @@ namespace batchExpress
                 string result = string.Empty;
                 List<string> dataHouse = new List<string>(); //临时的数据仓库
                 excelTable.Remove(0, excelTable.Length);
-                excelTable.Append("<div><table><th>订单号</th><th>运单号</th><th>快递公司</th><th>结果</th>");
+                excelTable.Append("<div><table><th>订单号</th><th>运单号</th><th>快递公司code</th><th>结果</th>");
                 for (int i = 0; i < dt.Rows.Count; i++) //按行读取数据
                 {
                     excelTable.Append("<tr>");
@@ -79,19 +79,20 @@ namespace batchExpress
 
         //调用API
         protected string responseFromAPI(long? dataTid, string dataOutSid, string dataCompanyCode)
-        {
+        {   /*
             string url = "http://gw.api.tbsandbox.com/router/rest";//沙箱环境调用地址,
             string appkey = "1021723219";
             string appsecret = "sandboxa85cf30610ff927555aa6e825";
-            string sessionkey = "6100e236b608af9b78530e8fd2b236b1b63be8dab8ffff22074082786";   //如沙箱测试帐号sandbox_c_1授权后得到的sessionkey
+            string sessionkey = access_token.Value.ToString();   //如沙箱测试帐号sandbox_c_1授权后得到的sessionkey
+            //"6100e236b608af9b78530e8fd2b236b1b63be8dab8ffff22074082786"
+             */
 
-            /*
             //正式环境需要设置为:
             string url = "http://gw.api.taobao.com/router/rest";
             string appkey = "21723219";
             string appsecret = "789a305a85cf30610ff927555aa6e825";
-            string sessionkey = "test";   //如沙箱测试帐号sandbox_c_1授权后得到的sessionkey
-            */
+            string sessionkey = access_token.Value.ToString();
+            
 
             ITopClient client = new DefaultTopClient(url, appkey, appsecret,"json");
             LogisticsOfflineSendRequest req = new LogisticsOfflineSendRequest();
