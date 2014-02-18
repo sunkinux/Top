@@ -20,7 +20,11 @@ namespace batchExpress
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!IsPostBack)
+            {
+                if (Response.Cookies["sessionKey"].Value != null)
+                    sessionKey.Value = Server.HtmlEncode(Request.Cookies["sessionKey"].Value);
+            }
         }
 
 
@@ -43,6 +47,26 @@ namespace batchExpress
                 List<string> dataHouse = new List<string>(); //临时的数据仓库
                 excelTable.Remove(0, excelTable.Length);
                 excelTable.Append("<div><table><th>订单号</th><th>运单号</th><th>快递公司code</th><th>结果</th>");
+
+                string session = sessionKey.Value.ToString();   //如沙箱测试帐号sandbox_c_1授权后得到的sessionkey
+                
+                if (Response.Cookies["sessionKey"].Value != null)//写cookie
+                {
+                    if (session != "" && Response.Cookies["sessionKey"].Value.ToString() != session)
+                    {
+                        Response.Cookies["sessionKey"].Value = session;
+                        Response.Cookies["sessionKey"].Expires = DateTime.Now.AddDays(1);
+                    }
+                }
+                else
+                {
+                    if (session != "")
+                    {
+                        Response.Cookies["sessionKey"].Value = session;
+                        Response.Cookies["sessionKey"].Expires = DateTime.Now.AddDays(1);
+                    }
+                }
+
                 for (int i = 0; i < dt.Rows.Count; i++) //按行读取数据
                 {
                     excelTable.Append("<tr>");
@@ -52,7 +76,7 @@ namespace batchExpress
                         dataHouse.Add(dt.Rows[i][j].ToString()); //将数据放入仓库中
                     }
 
-                    result = responseFromAPI(Convert.ToInt64(dataHouse[0]), dataHouse[1], dataHouse[2]);//调用API方法，返回结果
+                    result = responseFromAPI(Convert.ToInt64(dataHouse[0]), dataHouse[1], dataHouse[2], session);//调用API方法，返回结果
                     excelTable.Append("<td>" + result + "</td></tr>"); //将结果加在表的最后一行
 
                     dataHouse.RemoveRange(0, dataHouse.Count); //清空List
@@ -78,28 +102,25 @@ namespace batchExpress
         }
 
         //调用API
-        protected string responseFromAPI(long? dataTid, string dataOutSid, string dataCompanyCode)
+        protected string responseFromAPI(long? dataTid, string dataOutSid, string dataCompanyCode, string session)
         {   /*
             string url = "http://gw.api.tbsandbox.com/router/rest";//沙箱环境调用地址,
             string appkey = "1021723219";
             string appsecret = "sandboxa85cf30610ff927555aa6e825";
-            string sessionkey = access_token.Value.ToString();   //如沙箱测试帐号sandbox_c_1授权后得到的sessionkey
             //"6100e236b608af9b78530e8fd2b236b1b63be8dab8ffff22074082786"
-             */
+            */
 
             //正式环境需要设置为:
             string url = "http://gw.api.taobao.com/router/rest";
             string appkey = "21723219";
             string appsecret = "789a305a85cf30610ff927555aa6e825";
-            string sessionkey = access_token.Value.ToString();
-            
 
             ITopClient client = new DefaultTopClient(url, appkey, appsecret,"json");
             LogisticsOfflineSendRequest req = new LogisticsOfflineSendRequest();
             req.Tid = dataTid;
             req.OutSid = dataOutSid;
             req.CompanyCode = dataCompanyCode;
-            LogisticsOfflineSendResponse response = client.Execute(req, sessionkey);
+            LogisticsOfflineSendResponse response = client.Execute(req, session);
 
             return response.Body;
         }
