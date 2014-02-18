@@ -40,7 +40,7 @@
         </p>
         <p>
             <asp:Button ID="Button_Import" runat="server" Text="提交批量处理" Width="100" Height="30" OnClick="Button_Import_Click" />
-            <br />支持 .xls, .xlsx 两种格式；请将数据放置在默认的 Sheet1 中，第一行的前三列请分别填入列名：“订单号”、“运单号”、“快递公司 code”<br />（注意：淘宝的订单号是一串很长的数字，需要在数字前加上单引号，将其转为文本，否则程序无法正确识别）
+            <br />支持 .xls, .xlsx 两种格式；请将数据放置在默认的 Sheet1 中，第一行的前三列请分别填入列名：“订单号”、“运单号”、“快递公司 code”<br />（注意：订单号、运单号如果是一串很长的数字，需要在数字前加上单引号，将其转为文本，否则程序无法正确识别）
         </p>
         
         <div id="divExcelData" runat="server"></div>

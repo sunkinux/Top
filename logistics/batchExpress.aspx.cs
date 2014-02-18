@@ -22,7 +22,7 @@ namespace batchExpress
         {
             if (!IsPostBack)
             {
-                if (Response.Cookies["sessionKey"].Value != null)
+                if (Request.Cookies["sessionKey"].Value != null)
                     sessionKey.Value = Server.HtmlEncode(Request.Cookies["sessionKey"].Value);
             }
         }
@@ -50,9 +50,9 @@ namespace batchExpress
 
                 string session = sessionKey.Value.ToString();   //如沙箱测试帐号sandbox_c_1授权后得到的sessionkey
                 
-                if (Response.Cookies["sessionKey"].Value != null)//写cookie
+                if (Request.Cookies["sessionKey"].Value != null)//写cookie
                 {
-                    if (session != "" && Response.Cookies["sessionKey"].Value.ToString() != session)
+                    if (session != "" && Request.Cookies["sessionKey"].Value.ToString() != session)
                     {
                         Response.Cookies["sessionKey"].Value = session;
                         Response.Cookies["sessionKey"].Expires = DateTime.Now.AddDays(1);
@@ -114,7 +114,7 @@ namespace batchExpress
             string url = "http://gw.api.taobao.com/router/rest";
             string appkey = "21723219";
             string appsecret = "789a305a85cf30610ff927555aa6e825";
-
+             
             ITopClient client = new DefaultTopClient(url, appkey, appsecret,"json");
             LogisticsOfflineSendRequest req = new LogisticsOfflineSendRequest();
             req.Tid = dataTid;
